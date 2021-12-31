@@ -24,6 +24,9 @@
 */
 let sections = undefined;
 
+/**
+ * IntersectionObserver options
+ */
 let options = {
     root: null,
     rootMargin: '0px',
@@ -58,7 +61,7 @@ const setActiveSectionHelper = (target) => {
  *
 */
 
-// build the nav
+// build the navbar dynamically
 let buildNav = () => {
     sections = document.querySelectorAll('section');
 
