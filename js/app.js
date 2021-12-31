@@ -102,7 +102,7 @@ const toggleScrollToTopButton = (e) => {
 
 const scrollToTopOnClickHandler = (e) => {
     e.preventDefault();
-    document.body.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.documentElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 /**
