@@ -66,7 +66,9 @@ let buildNav = () => {
     for (const section of sections) {
         const linkElement = document.createElement('a');
         linkElement.href = `#${section.getAttribute('id')}`;
+        linkElement.onclick = scrollToSection;
         linkElement.classList.toggle('menu__link');
+        linkElement.addEventListener('click', scrollToSection);
         linkElement.textContent = section.getAttribute('data-nav');
         const sectionNameli = document.createElement('li');
         sectionNameli.appendChild(linkElement);
@@ -86,7 +88,15 @@ let setActiveSection = () => {
 }
 
 // Scroll to anchor ID using scrollTO event
-
+const scrollToSection = (e) => {
+    e.preventDefault();
+    const element = e.target;
+    let sectionId = element.getAttribute('href');
+    sectionId = sectionId.slice(1, sectionId.length);
+    const section = document.getElementById(sectionId);
+    section.scrollIntoView({ behavior: 'smooth' });
+    return false;
+}
 
 /**
  * End Main Functions
@@ -96,6 +106,7 @@ let setActiveSection = () => {
 
 // Build menu 
 buildNav();
+
 // Scroll to section on link click
 
 // Set sections as active
