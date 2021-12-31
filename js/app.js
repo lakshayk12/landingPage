@@ -22,8 +22,9 @@
  * Define Global Variables
  *
 */
-let sections = undefined;
-
+let sections;
+let currentInsectingSectionId;
+let scrollTimer = null;
 /**
  * IntersectionObserver options
  */
@@ -32,28 +33,58 @@ let options = {
     rootMargin: '0px',
     threshold: 0.5
 };
+
 /**
  * End Global Variables
  * Start Helper Functions
  *
 */
+
+/**
+ * Add an active state to your navigation items when a section is in the viewport.
+ */
+const setActiveNavBarAnchor = () => {
+    const navbarSectionLinks = document.querySelectorAll('.navbar__menu #navbar__list a');
+    navbarSectionLinks.forEach((link) => {
+        let sectionId = link.getAttribute('href');
+        sectionId = sectionId.slice(1, sectionId.length);
+        if (currentInsectingSectionId === sectionId) {
+            link.classList.add('menu__link__active');
+        }
+        else {
+            link.classList.remove('menu__link__active');
+        }
+    });
+}
+
 const setActiveSectionHelper = (target) => {
     const io = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             const currentSectionInViewPort = entry.target;
             if (entry.isIntersecting) {
                 currentSectionInViewPort.classList.add('your-active-class');
+                currentInsectingSectionId = currentSectionInViewPort.getAttribute('id');
                 // observer.disconnect();
             }
             else {
                 currentSectionInViewPort.classList.remove('your-active-class');
             }
         })
+        setActiveNavBarAnchor();
     }, options);
 
     io.observe(target);
 }
 
+const hideNavBar = (e) => {
+    e.preventDefault();
+    clearTimeout(scrollTimer);
+    const element = document.querySelector('.navbar__menu ul');
+    element.style.display = 'block';
+    scrollTimer = setTimeout(() => {
+        element.style.display = 'none';
+    }, 10000);
+}
 
 /**
  * End Helper Functions
@@ -109,8 +140,8 @@ const scrollToSection = (e) => {
 // Build menu 
 buildNav();
 
-// Scroll to section on link click
-
 // Set sections as active
 setActiveSection();
 
+//Hide fixed navigation bar while not scrolling (it should still be present on page load).
+document.addEventListener('scroll', hideNavBar);
