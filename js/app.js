@@ -22,14 +22,34 @@
  * Define Global Variables
  *
 */
+let sections = undefined;
 
-
+let options = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.7
+};
 /**
  * End Global Variables
  * Start Helper Functions
  *
 */
+const setActiveSectionHelper = (target) => {
+    const io = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            const currentSectionInViewPort = entry.target;
+            if (entry.isIntersecting) {
+                currentSectionInViewPort.classList.add('your-active-class');
+                // observer.disconnect();
+            }
+            else {
+                currentSectionInViewPort.classList.remove('your-active-class');
+            }
+        })
+    }, options);
 
+    io.observe(target);
+}
 
 
 /**
@@ -39,10 +59,30 @@
 */
 
 // build the nav
+let buildNav = () => {
+    sections = document.querySelectorAll('section');
 
+    const fragment = document.createDocumentFragment();
+    for (const section of sections) {
+        const linkElement = document.createElement('a');
+        linkElement.classList.toggle('menu__link');
+        linkElement.textContent = section.getAttribute('data-nav');
+        const sectionNameli = document.createElement('li');
+        sectionNameli.appendChild(linkElement);
+        fragment.appendChild(sectionNameli);
+    }
+    const navList = document.querySelector('.navbar__menu #navbar__list');
+    navList.appendChild(fragment);
+}
 
 // Add class 'active' to section when near top of viewport
-
+let setActiveSection = () => {
+    if (sections == null || sections == undefined) {
+        return;
+    }
+    const targets = sections;
+    targets.forEach(setActiveSectionHelper);
+}
 
 // Scroll to anchor ID using scrollTO event
 
@@ -54,9 +94,9 @@
 */
 
 // Build menu 
-
+buildNav();
 // Scroll to section on link click
-
+setActiveSection();
 // Set sections as active
 
 
