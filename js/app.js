@@ -68,7 +68,6 @@ let buildNav = () => {
         linkElement.href = `#${section.getAttribute('id')}`;
         linkElement.onclick = scrollToSection;
         linkElement.classList.toggle('menu__link');
-        linkElement.addEventListener('click', scrollToSection);
         linkElement.textContent = section.getAttribute('data-nav');
         const sectionNameli = document.createElement('li');
         sectionNameli.appendChild(linkElement);
@@ -95,7 +94,7 @@ const scrollToSection = (e) => {
     sectionId = sectionId.slice(1, sectionId.length);
     const section = document.getElementById(sectionId);
     section.scrollIntoView({ behavior: 'smooth' });
-    return false;
+    return true;
 }
 
 /**
