@@ -65,6 +65,7 @@ let buildNav = () => {
     const fragment = document.createDocumentFragment();
     for (const section of sections) {
         const linkElement = document.createElement('a');
+        linkElement.href = `#${section.getAttribute('id')}`;
         linkElement.classList.toggle('menu__link');
         linkElement.textContent = section.getAttribute('data-nav');
         const sectionNameli = document.createElement('li');
@@ -96,7 +97,7 @@ let setActiveSection = () => {
 // Build menu 
 buildNav();
 // Scroll to section on link click
-setActiveSection();
-// Set sections as active
 
+// Set sections as active
+setActiveSection();
 
