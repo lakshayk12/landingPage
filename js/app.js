@@ -25,6 +25,7 @@
 let sections;
 let currentInsectingSectionId;
 let scrollTimer = null;
+const NAVBAR_TIMEOUT = 1000;
 /**
  * IntersectionObserver options
  */
@@ -76,14 +77,32 @@ const setActiveSectionHelper = (target) => {
     io.observe(target);
 }
 
-const hideNavBar = (e) => {
-    e.preventDefault();
+const hideNavBarOnTimeOut = () => {
     clearTimeout(scrollTimer);
     const element = document.querySelector('.navbar__menu ul');
     element.style.display = 'block';
     scrollTimer = setTimeout(() => {
         element.style.display = 'none';
-    }, 10000);
+    }, NAVBAR_TIMEOUT);
+}
+
+/**
+ * Add a scroll to top button on the page that’s only visible when the user scrolls below the fold of the page.
+ */
+const toggleScrollToTopButton = (e) => {
+    const scrollToTopButtonElement = document.querySelector('#scrollToTop');
+    scrollToTopButtonElement.onclick = scrollToTopOnClickHandler;
+    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+        scrollToTopButtonElement.style.display = 'block';
+    }
+    else {
+        scrollToTopButtonElement.style.display = 'none';
+    }
+}
+
+const scrollToTopOnClickHandler = (e) => {
+    e.preventDefault();
+    document.body.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 /**
@@ -91,6 +110,17 @@ const hideNavBar = (e) => {
  * Begin Main Functions
  *
 */
+
+/**
+ * 
+ * Handles different scrolling behaviours
+ */
+const onScrollBehaviours = (e) => {
+    e.preventDefault();
+    hideNavBarOnTimeOut();
+    toggleScrollToTopButton();
+}
+
 
 // build the navbar dynamically
 let buildNav = () => {
@@ -144,4 +174,4 @@ buildNav();
 setActiveSection();
 
 //Hide fixed navigation bar while not scrolling (it should still be present on page load).
-document.addEventListener('scroll', hideNavBar);
+document.addEventListener('scroll', onScrollBehaviours);
