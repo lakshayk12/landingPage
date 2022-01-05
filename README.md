@@ -6,6 +6,6 @@ A Responsive WebAPP having mordern functionalities like appending dynamically ad
 ## Project Technology stack used:
  -  Built using HTML, CSS and JS.
 
-##Usage:
+## Usage:
 - Project is hosted at github pages: https://lakshayk12.github.io/landingPage/
 - Any editor and browser can be used for development purpose. Recommened tools:- VS Code & Chrome Dev.
